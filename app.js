@@ -68,7 +68,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     var label2 = "Poverty: ";
   }
   else {
-    var label = "Median Income: $";
+    var label = "Income: $";
     var label2 = "Poverty: ";
   }
 
@@ -80,7 +80,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     .html(function(d) {
       return (`<b>${d.state}</b><br>
               ${label}${d[chosenXAxis]}<br>
-              ${label2}${d.poverty}%`);
+              % ${label2}${d.poverty}`);
     });
 
   // call tool tip on circlesGroup
@@ -149,18 +149,6 @@ if (err) throw err;
     .attr("stroke-width", 3)
     .attr("stroke", "black");
 
-  // // state labels?
-  // chart.selectAll("text")
-  //   .data(stateData)
-  //   .enter()
-  //   .append("text")
-  //   .text(d => d.abbr)
-  //   .attr("x", d => xLinearScale(d[chosenXAxis]))
-  //   .attr("y", d => yLinearScale(d.poverty))
-  //   .attr("font-size", "12px")
-  //   .attr("text-anchor", "middle")
-  //   .attr("class", "stateAbbr");
-    
   // Create group for 2nd x-axis labels
   var labelsGroup = svg
     .append("g")
@@ -192,8 +180,6 @@ if (err) throw err;
     .attr("value", "income") // value to grab for event listener
     .classed("inactive", true)
     .text("Median State Income in $");
-
-
 
   // Create y axis label
   svg.append("text")
@@ -266,10 +252,3 @@ if (err) throw err;
       }
   });
 });
-
-
-
-// next to do:
-// get state tags to work
-// set up multiple y axis. use hair metal as template to build another axis. 
-// make stars instead of circles
