@@ -57,6 +57,14 @@ function renderCircles(circlesGroup, newXScale) {
   return circlesGroup;
 }
 
+// function used for updating state ABBR group with a transition
+function renderText(textGroup, newXScale, chosenXaxis) {
+  textGroup.transition()
+    .duration(1000)
+    .attr("x", d => newXScale(d[chosenXAxis]));
+  return textGroup;
+}
+
 // function used for updating circles with tooltip
 function updateToolTip(chosenXAxis, circlesGroup) {
   if (chosenXAxis === "age") {
@@ -144,10 +152,22 @@ if (err) throw err;
     .attr("cy", d => yLinearScale(d.poverty))
     .attr("r", 15)
     .attr("fill", "white")
-    .attr("opacity", ".6")
-    .attr("stroke-opacity", ".8")
+    .attr("opacity", ".8")
+    .attr("stroke-opacity", "0.9")
     .attr("stroke-width", 3)
-    .attr("stroke", "black");
+    .attr("stroke", "darkblue");
+
+  // create state ABBR
+  textGroup = svg.selectAll("state-text")
+    .attr("classed", "state-text")
+    .data(stateData)
+    .enter()
+    .append("text")
+    .text(d => d.abbr)
+    .attr("x", d => xLinearScale(d[chosenXAxis]))
+    .attr("y", d => yLinearScale(d.poverty))
+    .attr("text-anchor", "middle")
+    .style("font-size", "12px");
 
   // Create group for 2nd x-axis labels
   var labelsGroup = svg
@@ -211,6 +231,8 @@ if (err) throw err;
 
         // updates circles when axis is chosen
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+        textGroup = renderText(textGroup, xLinearScale, chosenXAxis);
+
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
